@@ -1,0 +1,37 @@
+.map {
+	height: 400px;
+	width: 100%;
+}
+
+.post-content img,
+.post-content iframe {
+	max-width: 100%;
+	height: auto;
+}
+
+.posts,
+.map-content { min-height: 125px; }
+
+.loading {
+	position: absolute;
+	background: transparent url(images/ajax-loader.gif) no-repeat center top;
+	width: 100%;
+	text-align: center;
+	color: #666;
+	font-size: 12px;
+	padding-top: 60px;
+	margin: 15px 0;
+}
+
+.header {
+	border-bottom: solid 3px #fe7325;
+	background-image: url(../img/bandeira-governo-sp.png);
+	background-position: top left;
+	background-repeat: no-repeat;
+}
+.footer { 
+	text-align: center;
+	padding-bottom: 15px;
+}
+
+.top { clear: both; }
