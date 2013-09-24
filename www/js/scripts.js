@@ -47,3 +47,24 @@ function loadMap() {
 		}
 	});
 }
+
+// Swipe
+
+$( document ).on( "pageinit", "#index, #programas-projetos, #contato", function() {
+    var page = "#" + $( this ).attr( "id" ),
+        next = $( this ).jqmData( "next" ),
+        prev = $( this ).jqmData( "prev" );
+
+    if ( next ) {
+        $( document ).on( "swipeleft", page, function() {
+            $.mobile.changePage( '#' + next, { transition: "none" });
+        });
+    }
+   
+    if ( prev ) {
+        $( document ).on( "swiperight", page, function() {
+            $.mobile.changePage( '#' + prev, { transition: "none" } );
+        });
+      
+    }
+});
