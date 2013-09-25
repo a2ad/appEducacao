@@ -1,6 +1,13 @@
 .map {
-	height: 400px;
+	height: 200px;
 	width: 100%;
+}
+
+.hold-map {
+	min-height: 150px;
+	width: 100%;
+	position: relative;
+	overflow: hidden;
 }
 
 .post-content img,
@@ -29,6 +36,7 @@
 	background-position: top left;
 	background-repeat: no-repeat;
 }
+
 .footer { 
 	text-align: center;
 	padding-bottom: 15px;
