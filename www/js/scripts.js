@@ -7,7 +7,6 @@ $(document).on('mobileinit', function() {
 	$.mobile.page.prototype.options.domCache = true;
 });
 
-
 // Topo
 
 function goTop() {
