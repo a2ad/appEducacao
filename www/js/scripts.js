@@ -5,12 +5,10 @@ $(document).on('mobileinit', function() {
 	$.mobile.defaultPageTransition   = 'none';
 	$.mobile.defaultDialogTransition = 'none';
 	$.mobile.page.prototype.options.domCache = true;
-	console.log( $.mobile );
 });
 
 
 // Topo
-
 function goTop() {
 	$('.top').on('tap', function(event){
 		$('html, body').animate({scrollTop:0}, 'fast');
@@ -21,9 +19,13 @@ $(document).on('pageinit', '#post, #programa', function( event ) {
 	goTop();
 });
 
+// Noticias
+$(document).on('pageshow', '#index', function( event ) {
+	$('#loading-posts').fadeOut();
+});
+
 
 // Mapa
-
 $(document).on('pageshow', '#contato', function( event ) {
 	$('#map-canvas').gmap('refresh');
 });
@@ -50,7 +52,6 @@ function loadMap() {
 }
 
 // Swipe
-
 $( document ).on( "pageinit", "#index, #programas-projetos, #contato", function() {
     var page = "#" + $( this ).attr( "id" ),
         next = $( this ).jqmData( "next" ),
