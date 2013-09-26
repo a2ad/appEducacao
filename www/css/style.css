@@ -30,6 +30,17 @@
 	margin: 15px 0;
 }
 
+.loading-first {
+	z-index: 9999;
+	width: 100%;
+	height: 100%;
+	background-color: #000;
+	background-position: center center;
+	top: 0;
+	padding-top: 0;
+	margin-top: 0;
+}
+
 .header {
 	border-bottom: solid 3px #fe7325;
 	background-image: url(../img/bandeira-governo-sp.png);
