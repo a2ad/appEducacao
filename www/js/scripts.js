@@ -20,8 +20,7 @@ $(document).on('pageinit', '#post, #programa', function( event ) {
 });
 
 // Noticias
-$(document).on('pageshow', '#index', function( event ) {
-	$('#loading-posts').fadeOut();
+$(document).on('pageshow', '#index', function( event ) {	
     getNoticias();
 });
 
@@ -114,8 +113,8 @@ function getNoticias() {
             });
 
             $('.posts').listview('refresh');
+            $('#loading-posts').fadeOut();
             tapListViewNoticias();
         }
     });
 }
-
