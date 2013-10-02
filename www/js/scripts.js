@@ -72,6 +72,31 @@ $( document ).on( "pageinit", "#index, #programas-projetos, #contato", function(
     }
 });
 
+var tapListViewNoticias = function(){
+  $( ".posts > li" ).bind( "tap", tapHandler );
+ 
+    function tapHandler( event ){
+        var id = $( event.target ).data('id');
+        var tplNoticia = '<h2>{{titulo}}</h2>{{conteudo}}';
+        $('.post-content').empty();
+
+        $.ajax({
+             url: 'http://www.educacao.sp.gov.br/api/noticias/'+id+'?callback=?',
+             type: 'GET',
+             dataType: 'json',
+             success: function (data) {
+                $('.post-content').removeClass('loading');
+
+                var content = tplNoticia.replace('{{titulo}}', data.Titulo);
+                content = content.replace('{{conteudo}}', data.Texto);
+                
+                $('.post-content').html(content);
+             }
+         });
+
+    }
+};
+
 function getNoticias() {
     var li = '<li><a href="#post" data-id="{{id}}">{{titulo}}</a></li>';
 
@@ -86,9 +111,11 @@ function getNoticias() {
                 liTemp = li.replace('{{id}}', noticia.noticiaID);
                 liTemp = liTemp.replace('{{titulo}}', noticia.Titulo);
                 $('.posts').append(liTemp);
-            })
+            });
 
             $('.posts').listview('refresh');
+            tapListViewNoticias();
         }
     });
 }
+
