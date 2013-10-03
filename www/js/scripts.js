@@ -72,24 +72,24 @@ $( document ).on( "pageinit", "#index, #programas-projetos, #contato", function(
 });
 
 var tapListViewNoticias = function(){
-  $( ".posts > li" ).bind( "tap", tapHandler );
+  $( '.posts > li' ).bind( 'tap', tapHandler );
  
     function tapHandler( event ){
         var id = $( event.target ).data('id');
         var tplNoticia = '<h2>{{titulo}}</h2>{{conteudo}}';
-        $('.post-content').empty();
+        $('#post-content').empty().addClass('loading');
 
         $.ajax({
              url: 'http://www.educacao.sp.gov.br/api/noticias/'+id+'?callback=?',
              type: 'GET',
              dataType: 'json',
              success: function (data) {
-                $('.post-content').removeClass('loading');
+                $('#post-content').removeClass('loading');
 
                 var content = tplNoticia.replace('{{titulo}}', data.Titulo);
                 content = content.replace('{{conteudo}}', data.Texto);
                 
-                $('.post-content').html(content);
+                $('#post-content').html(content).trigger('create');
              }
          });
 
