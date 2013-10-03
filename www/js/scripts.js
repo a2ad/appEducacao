@@ -26,7 +26,7 @@ $(document).on('pageinit', '#index', function( event ) {
 
 //Programas
 $(document).on('pageinit', '#programas-projetos', function( event ){
-    getPrograms();
+    getProgramas();
 });
 
 // Mapa
@@ -123,9 +123,34 @@ function getNoticias() {
     });
 }
 
+var tapListViewProgramas = function(){
+  $( '#list-programs > li' ).bind( 'tap', tapHandler );
+ 
+    function tapHandler( event ){
+        var uri = $( event.target ).data('uri');
+        var tplPrograma = '<h2>{{titulo}}</h2>{{conteudo}}';
+        $('#programa-content').empty().addClass('loading');
+
+        $.ajax({
+             url: 'http://www.educacao.sp.gov.br/api/paginas/'+uri+'?callback=?',
+             type: 'GET',
+             dataType: 'json',
+             success: function (data) {
+                $('#post-content').removeClass('loading');
+
+                var content = tplPrograma.replace('{{titulo}}', data.Titulo);
+                content = content.replace('{{conteudo}}', data.Texto);
+                
+                $('#programa-content').removeClass('loading').html(content).trigger('create');
+             }
+         });
+
+    }
+};
+
 // Programas e Projetos
-function getPrograms() {
-    var li = '<li><a href="#programa" data-id="{{id}}">{{titulo}}</a></li>';
+function getProgramas() {
+    var li = '<li><a href="{{link}}" data-uri="{{uri}}">{{titulo}}</a></li>';
 
     $.ajax({
         url: 'http://www.educacao.sp.gov.br/api/paginas/projetos?callback=?',
@@ -135,11 +160,19 @@ function getPrograms() {
             var programas = data.filhas;
             for( var i = 0; i < programas.length; i++ ) {
                 var liTemp;
-                liTemp = li.replace('{{id}}', programas[i].noticiaID);
+                liTemp = li.replace('{{uri}}', programas[i].uri);
                 liTemp = liTemp.replace('{{titulo}}', programas[i].Titulo);
+
+                if (programas[i].uri.search('http') != -1) {
+                    liTemp = liTemp.replace('{{link}}', programas[i].uri);
+                } else {
+                    liTemp = liTemp.replace('{{link}}', '#programa');
+                }
+
                 $('#list-programs').append(liTemp);
             }
             $('#list-programs').listview('refresh');
+            tapListViewProgramas();
         }        
     });
 }
