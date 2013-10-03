@@ -25,7 +25,7 @@ under the License.
    <name>Educação SP</name>
 
    <description>
-      Aplicativo da Secretaria de Educação do Estado de São Paulo, com notícias, informações sobre os programas e projetos e contato.
+      Aplicativo da Secretaria de Educação do Estado de São Paulo, com as últimas notícias, informações sobre os Programas e Projetos e contato.
    </description>
 
    <author href="http://www.a2comunicacao.com.br" email="info@a2comunicacao.com.br">
@@ -95,11 +95,6 @@ under the License.
    <gap:splash src="splash/android/mdpi.png" gap:platform="android" gap:density="mdpi" />
    <gap:splash src="splash/android/hdpi.png" gap:platform="android" gap:density="hdpi" />
    <gap:splash src="splash/android/xhdpi.png" gap:platform="android" gap:density="xhdpi" />
-
-   <gap:splash src="splash/android/ldpi-landscape.png" gap:platform="android" gap:density="ldpi" width="320" height="200"/>
-   <gap:splash src="splash/android/mdpi-landscape.png" gap:platform="android" gap:density="mdpi" width="480" height="320"/>
-   <gap:splash src="splash/android/hdpi-landscape.png" gap:platform="android" gap:density="hdpi" width="800" height="480"/>
-   <gap:splash src="splash/android/xhdpi-landscape.png" gap:platform="android" gap:density="xhdpi" width="1280" height="720"/>
 
    <gap:splash src="splash/bb/splash.png" gap:platform="blackberry" />
    <gap:splash src="splash/winphone/splash.jpg" gap:platform="winphone" />

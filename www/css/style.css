@@ -43,6 +43,10 @@
 	margin-top: 0;
 }
 
+.loading-map {
+	position: absolute;
+}
+
 .loading-first:after {
 	content: 'Carregando app..';
 	display: block;
@@ -54,21 +58,8 @@
 	height: 30px;
 	margin-top: -15px;
 	font-family: Helvetica, Arial, sans-serif;
-	font-style: italic;
 	font-size: 14px;
 	color: #fff;
-}
-
-.loading-first span {
-	position: absolute;
-	display: block;
-	width: 300px;
-	height: 30px;
-	font-family: Helvetica, Arial, sans-serif;
-	font-style: italic;
-	font-size: 14px;
-	color: #fff;
-	border: solid 1px red;
 }
 
 .header {
