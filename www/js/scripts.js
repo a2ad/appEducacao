@@ -5,7 +5,6 @@ $(document).on('mobileinit', function() {
 	$.mobile.defaultPageTransition   = 'none';
 	$.mobile.defaultDialogTransition = 'none';
 	$.mobile.page.prototype.options.domCache = true;
-    $.mobile.allowCrossDomainPages = true;
 });
 
 
