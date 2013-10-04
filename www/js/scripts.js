@@ -5,6 +5,7 @@ $(document).on('mobileinit', function() {
 	$.mobile.defaultPageTransition   = 'none';
 	$.mobile.defaultDialogTransition = 'none';
 	$.mobile.page.prototype.options.domCache = true;
+    $.mobile.allowCrossDomainPages = true;
 });
 
 
@@ -129,7 +130,7 @@ var tapListViewProgramas = function(){
     function tapHandler( event ){
         var uri = $( event.target ).data('uri');
         var tplPrograma = '<h2>{{titulo}}</h2>{{conteudo}}';
-        $('#programa-content').empty().addClass('loading');
+        $('#program-content').empty().addClass('loading');
 
         $.ajax({
              url: 'http://www.educacao.sp.gov.br/api/paginas/'+uri+'?callback=?',
@@ -141,7 +142,7 @@ var tapListViewProgramas = function(){
                 var content = tplPrograma.replace('{{titulo}}', data.Titulo);
                 content = content.replace('{{conteudo}}', data.Texto);
                 
-                $('#programa-content').removeClass('loading').html(content).trigger('create');
+                $('#program-content').removeClass('loading').html(content).trigger('create');
              }
          });
 
@@ -169,7 +170,7 @@ function getProgramas() {
                     liTemp = liTemp.replace('{{link}}', '#programa');
                 }
 
-                $('#list-programs').append(liTemp);
+                $('#list-programs').append(liTemp).next('.loading').remove();
             }
             $('#list-programs').listview('refresh');
             tapListViewProgramas();

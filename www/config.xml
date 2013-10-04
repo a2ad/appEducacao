@@ -41,19 +41,10 @@ under the License.
    <preference name="orientation" value="default" />
    <preference name="target-device" value="universal" />
    <preference name="fullscreen" value="true" />
-
    <preference name="detect-data-types" value="true" />
    <preference name="exit-on-suspend" value="false" />
-
    <preference name="auto-hide-splash-screen" value="false" />
-
-   <!--
-   <preference name="splashscreen" value="resourceName" />
-   <preference name="backgroundColor" value="0xFFF" />
-   <preference name="loadUrlTimeoutValue" value="20000" />
-   <preference name="InAppBrowserStorageEnabled" value="true" />
-   <preference name="disallowOverscroll" value="true" />
-   -->
+   
    <!-- This is required for native Android hooks -->
    <feature name="App">
       <param name="android-package" value="org.apache.cordova.App" />
