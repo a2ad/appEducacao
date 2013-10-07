@@ -84,3 +84,17 @@
     }
 
     .loading-map { position: absolute; }
+
+    .loading-first {
+        position: absolute;
+        z-index: 999999;
+        width: 100%;
+        height: 100%;
+        background-color: #000;
+        background-position: center center;
+        top: 0;
+        padding-top: 0;
+        margin-top: 0;
+    }
+
+    .loading-first:after { content: 'Carregando app..'; }

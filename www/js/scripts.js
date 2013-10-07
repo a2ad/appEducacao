@@ -19,9 +19,11 @@ $(document).on('pageinit', '#post, #programa', function( event ) {
 	goTop();
 });
 
+
 // Noticias
 $(document).on('pageinit', '#index', function( event ) {	
     getNoticias();
+    $('#loading-first').fadeOut().remove();
 });
 
 //Programas
@@ -138,7 +140,7 @@ function getNoticias() {
                 var liTemp;
                 liTemp = li.replace('{{id}}', noticia.noticiaID);
                 liTemp = liTemp.replace('{{titulo}}', noticia.Titulo);
-                $('.posts').append(liTemp);
+                $('.posts').append(liTemp).next('.loading').remove();
             });
 
             $('.posts').listview('refresh');
@@ -148,7 +150,6 @@ function getNoticias() {
 }
 
 // Programas e Projetos
-// Notícias
 $(document).on('pageshow', '#programa', function( event ) {
     var urlPrograma = window.location.hash;
     if ( urlPrograma != '#programa' ) {
