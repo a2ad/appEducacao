@@ -20,7 +20,6 @@
 <body>    
     <!-- Index -->
     <div data-role="page" id="index" data-next="programas-projetos">
-        <div id="loading-posts" class="loading loading-first"></div>
         <div data-role="header" data-position="fixed" data-id="persistent" data-tap-toggle="false" data-theme="c" class="header">
             <h1>Educação SP</h1>
             <div data-role="navbar">
@@ -32,9 +31,8 @@
             </div>
         </div>
         <div data-role="content" data-theme="a">
-            <ul data-role="listview" class="posts">
-                <p>Carregando notícias</p>
-            </ul>
+            <ul data-role="listview" class="posts"></ul>
+            <div class="loading loading-posts"></div>
         </div>
         <div class="footer" data-role="footer" data-theme="c">
             <p>Secretaria da Educação do Estado de São Paulo</p>

@@ -142,7 +142,6 @@ function getNoticias() {
             });
 
             $('.posts').listview('refresh');
-            $('#loading-posts').fadeOut().remove();
             tapListViewNoticias();
         }
     });
