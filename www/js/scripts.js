@@ -75,11 +75,36 @@ $( document ).on( "pageinit", "#index, #programas-projetos, #contato", function(
     }
 });
 
+// Notícias
+$(document).on('pageshow', '#post', function( event ) {
+    var urlNoticia = window.location.hash;
+    if ( urlNoticia != '#post' ) {
+        var noticia = urlNoticia.slice(6);
+        var tplNoticia = '<h2>{{titulo}}</h2>{{conteudo}}';
+        $('#post-content').empty().addClass('loading');
+
+        $.ajax({
+            url: 'http://www.educacao.sp.gov.br/api/noticias/'+noticia+'?callback=?',
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                $('#post-content').removeClass('loading');
+
+                var content = tplNoticia.replace('{{titulo}}', data.Titulo);
+                content = content.replace('{{conteudo}}', data.Texto);
+                
+                $('#post-content').html(content).trigger('create');
+                window.location.hash = 'post?' + noticia;
+            }
+        });
+    }
+});
+
 var tapListViewNoticias = function(){
   $( '.posts > li' ).bind( 'tap', tapHandler );
  
     function tapHandler( event ){
-        var id = $( event.target ).data('id');
+        var id = $( event.target ).data('noticia');
         var tplNoticia = '<h2>{{titulo}}</h2>{{conteudo}}';
         $('#post-content').empty().addClass('loading');
 
@@ -94,14 +119,14 @@ var tapListViewNoticias = function(){
                 content = content.replace('{{conteudo}}', data.Texto);
                 
                 $('#post-content').html(content).trigger('create');
+                window.location.hash = 'post?' + id;
              }
          });
-
     }
 };
 
 function getNoticias() {
-    var li = '<li><a href="#post" data-id={{id}}">{{titulo}}</a></li>';
+    var li = '<li><a href="#post" data-noticia={{id}}>{{titulo}}</a></li>';
 
     $.ajax({
         url: 'http://www.educacao.sp.gov.br/api/noticias/?callback=?',
@@ -117,11 +142,38 @@ function getNoticias() {
             });
 
             $('.posts').listview('refresh');
-            $('#loading-posts').fadeOut();
+            $('#loading-posts').fadeOut().remove();
             tapListViewNoticias();
         }
     });
 }
+
+// Programas e Projetos
+// Notícias
+$(document).on('pageshow', '#programa', function( event ) {
+    var urlPrograma = window.location.hash;
+    if ( urlPrograma != '#programa' ) {
+        var programa = urlPrograma.slice(10);
+        var uri = $( event.target ).data('uri');
+        var tplPrograma = '<h2>{{titulo}}</h2>{{conteudo}}';
+        $('#program-content').empty().addClass('loading');
+
+        $.ajax({
+             url: 'http://www.educacao.sp.gov.br/api/paginas/'+programa+'?callback=?',
+             type: 'GET',
+             dataType: 'json',
+             success: function (data) {
+                $('#post-content').removeClass('loading');
+
+                var content = tplPrograma.replace('{{titulo}}', data.Titulo);
+                content = content.replace('{{conteudo}}', data.Texto);
+                
+                $('#program-content').removeClass('loading').html(content).trigger('create');
+                window.location.hash = 'programa?' + programa;
+             }
+         });
+    }
+});
 
 var tapListViewProgramas = function(){
   $( '#list-programs > li' ).bind( 'tap', tapHandler );
@@ -142,13 +194,13 @@ var tapListViewProgramas = function(){
                 content = content.replace('{{conteudo}}', data.Texto);
                 
                 $('#program-content').removeClass('loading').html(content).trigger('create');
+                window.location.hash = 'programa?' + uri;
              }
          });
 
     }
 };
 
-// Programas e Projetos
 function getProgramas() {
     var li = '<li><a href="{{link}}" data-uri="{{uri}}">{{titulo}}</a></li>';
 
