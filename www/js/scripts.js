@@ -7,8 +7,8 @@ $(document).on('mobileinit', function() {
 	$.mobile.page.prototype.options.domCache = true;
 });
 
-
 // Topo
+
 function goTop() {
 	$('.top').on('tap', function(event){
 		$('html, body').animate({scrollTop:0}, 'fast');
@@ -19,19 +19,21 @@ $(document).on('pageinit', '#post, #programa', function( event ) {
 	goTop();
 });
 
-
 // Noticias
+
 $(document).on('pageinit', '#index', function( event ) {	
     getNoticias();
     $('#loading-first').fadeOut().remove();
 });
 
 //Programas
+
 $(document).on('pageinit', '#programas-projetos', function( event ){
     getProgramas();
 });
 
 // Mapa
+
 $(document).on('pageshow', '#contato', function( event ) {
 	$('#map-canvas').gmap('refresh');
 });
@@ -41,6 +43,7 @@ $(document).on('pageinit', '#contato', function( event ) {
 });
 
 // Carrega mapa
+
 function loadMap() {
 	var mapLocation = '-23.54486, -46.64337';
 	$('#map-canvas').gmap({
@@ -58,6 +61,7 @@ function loadMap() {
 }
 
 // Swipe
+
 $( document ).on( "pageinit", "#index, #programas-projetos, #contato", function() {
     var page = "#" + $( this ).attr( "id" ),
         next = $( this ).jqmData( "next" ),
@@ -77,154 +81,119 @@ $( document ).on( "pageinit", "#index, #programas-projetos, #contato", function(
     }
 });
 
+// Conteúdo
+
+function loadContent(container, api, contentID, hashURL) {
+    box = $(container);
+    box.empty().addClass('loading');
+
+    $.ajax({
+        url: 'http://www.educacao.sp.gov.br/api/'+api+'/'+contentID+'?callback=?',
+        type: 'GET',
+        dataType: 'json',
+        success: function (data) {
+            var newsContent = '<h2>' + data.Titulo + '</h2>' + data.Texto;
+            box.html(newsContent).trigger('create').removeClass('loading');
+            window.location.hash = ''+ hashURL +'?' + contentID;
+        }
+    });
+}
+
 // Notícias
-$(document).on('pageshow', '#post', function( event ) {
-    var urlNoticia = window.location.hash;
-    if ( urlNoticia != '#post' ) {
-        var noticia = urlNoticia.slice(6);
-        var tplNoticia = '<h2>{{titulo}}</h2>{{conteudo}}';
-        $('#post-content').empty().addClass('loading');
 
-        $.ajax({
-            url: 'http://www.educacao.sp.gov.br/api/noticias/'+noticia+'?callback=?',
-            type: 'GET',
-            dataType: 'json',
-            success: function (data) {
-                $('#post-content').removeClass('loading');
-
-                var content = tplNoticia.replace('{{titulo}}', data.Titulo);
-                content = content.replace('{{conteudo}}', data.Texto);
-                
-                $('#post-content').html(content).trigger('create');
-                window.location.hash = 'post?' + noticia;
-            }
-        });
-    }
-});
-
-var tapListViewNoticias = function(){
-  $( '.posts > li' ).bind( 'tap', tapHandler );
- 
-    function tapHandler( event ){
-        var id = $( event.target ).data('noticia');
-        var tplNoticia = '<h2>{{titulo}}</h2>{{conteudo}}';
-        $('#post-content').empty().addClass('loading');
-
-        $.ajax({
-             url: 'http://www.educacao.sp.gov.br/api/noticias/'+id+'?callback=?',
-             type: 'GET',
-             dataType: 'json',
-             success: function (data) {
-                $('#post-content').removeClass('loading');
-
-                var content = tplNoticia.replace('{{titulo}}', data.Titulo);
-                content = content.replace('{{conteudo}}', data.Texto);
-                
-                $('#post-content').html(content).trigger('create');
-                window.location.hash = 'post?' + id;
-             }
-         });
-    }
-};
+// Trazendo lista de notícias
 
 function getNoticias() {
-    var li = '<li><a href="#post" data-noticia={{id}}>{{titulo}}</a></li>';
+    var liTemp = '',
+    boxPosts = $('#list-posts');
 
     $.ajax({
         url: 'http://www.educacao.sp.gov.br/api/noticias/?callback=?',
         type: 'GET',
         dataType: 'json',
         success: function (data) {
-            $('.posts').empty();
-            $.each(data.noticias, function (key, noticia) {
-                var liTemp;
-                liTemp = li.replace('{{id}}', noticia.noticiaID);
-                liTemp = liTemp.replace('{{titulo}}', noticia.Titulo);
-                $('.posts').append(liTemp).next('.loading').remove();
-            });
+            boxPosts.empty();
+            var dataLength,
+            news = data.noticias;
+            for( var i = 0, dataLength = data.noticias.length; i < dataLength; i++ ) {
+                liTemp += '<li><a href="#post" data-noticia="' + news[i].noticiaID + '">' + news[i].Titulo + '</a></li>';               
+            }
 
-            $('.posts').listview('refresh');
+            boxPosts.append(liTemp).listview('refresh').next('.loading').remove();
             tapListViewNoticias();
         }
     });
 }
 
-// Programas e Projetos
-$(document).on('pageshow', '#programa', function( event ) {
-    var urlPrograma = window.location.hash;
-    if ( urlPrograma != '#programa' ) {
-        var programa = urlPrograma.slice(10);
-        var uri = $( event.target ).data('uri');
-        var tplPrograma = '<h2>{{titulo}}</h2>{{conteudo}}';
-        $('#program-content').empty().addClass('loading');
+// Adiciona evento ao tap na lista de notícias
 
-        $.ajax({
-             url: 'http://www.educacao.sp.gov.br/api/paginas/'+programa+'?callback=?',
-             type: 'GET',
-             dataType: 'json',
-             success: function (data) {
-                $('#post-content').removeClass('loading');
-
-                var content = tplPrograma.replace('{{titulo}}', data.Titulo);
-                content = content.replace('{{conteudo}}', data.Texto);
-                
-                $('#program-content').removeClass('loading').html(content).trigger('create');
-                window.location.hash = 'programa?' + programa;
-             }
-         });
-    }
-});
-
-var tapListViewProgramas = function(){
-  $( '#list-programs > li' ).bind( 'tap', tapHandler );
+var tapListViewNoticias = function(){
+  $( '.posts > li' ).bind( 'tap', tapHandler );
  
     function tapHandler( event ){
-        var uri = $( event.target ).data('uri');
-        var tplPrograma = '<h2>{{titulo}}</h2>{{conteudo}}';
-        $('#program-content').empty().addClass('loading');
-
-        $.ajax({
-             url: 'http://www.educacao.sp.gov.br/api/paginas/'+uri+'?callback=?',
-             type: 'GET',
-             dataType: 'json',
-             success: function (data) {
-                $('#post-content').removeClass('loading');
-
-                var content = tplPrograma.replace('{{titulo}}', data.Titulo);
-                content = content.replace('{{conteudo}}', data.Texto);
-                
-                $('#program-content').removeClass('loading').html(content).trigger('create');
-                window.location.hash = 'programa?' + uri;
-             }
-         });
-
+        var newsID = $( event.target ).data('noticia');
+        loadContent( '#post-content', 'noticias', newsID, 'post');
     }
 };
 
+// Mostra notícia de acordo com o ID na página
+
+$(document).on('pageshow', '#post', function( event ) {
+    var newsURL = window.location.hash;
+    if ( newsURL != '#post' ) {
+        var newsID = newsURL.slice(6);
+        loadContent( '#post-content', 'noticias', newsID, 'post');
+    }
+});
+
+// Programas e projetos
+
+// Trazendo lista de programas e projetos
+
 function getProgramas() {
-    var li = '<li><a href="{{link}}" data-uri="{{uri}}">{{titulo}}</a></li>';
+    var liTemp = '',
+    boxPrograms = $('#list-programs');
 
     $.ajax({
         url: 'http://www.educacao.sp.gov.br/api/paginas/projetos?callback=?',
         type: 'GET',
         dataType: 'json',
         success: function(data) {
-            var programas = data.filhas;
-            for( var i = 0; i < programas.length; i++ ) {
-                var liTemp;
-                liTemp = li.replace('{{uri}}', programas[i].uri);
-                liTemp = liTemp.replace('{{titulo}}', programas[i].Titulo);
+            var programs = data.filhas;
 
-                if (programas[i].uri.search('http') != -1) {
-                    liTemp = liTemp.replace('{{link}}', programas[i].uri);
+            for( var i = 0; i < programs.length; i++ ) {
+                var linkProgram = '';
+                if (programs[i].uri.search('http') != -1) {
+                    linkProgram = programs[i].uri;
                 } else {
-                    liTemp = liTemp.replace('{{link}}', '#programa');
+                    linkProgram = '#programa';
                 }
 
-                $('#list-programs').append(liTemp).next('.loading').remove();
+                liTemp += '<li><a href="' + linkProgram + '" data-uri="' + programs[i].uri + '">' + programs[i].Titulo + '</a></li>';
             }
-            $('#list-programs').listview('refresh');
+            boxPrograms.append(liTemp).listview('refresh').next('.loading').remove();
             tapListViewProgramas();
         }        
     });
 }
+
+// Adiciona evento ao tap na lista de programas e projetos
+
+var tapListViewProgramas = function(){
+  $( '#list-programs > li' ).bind( 'tap', tapHandler );
+ 
+    function tapHandler( event ){
+        var uri = $( event.target ).data('uri');
+        loadContent( '#program-content', 'paginas', uri, 'programa');
+    }
+};
+
+// Mostra programa e/ou projeto de acordo com o ID na página
+
+$(document).on('pageshow', '#programa', function( event ) {
+    var urlPrograma = window.location.hash;
+    if ( urlPrograma != '#programa' ) {
+        var programa = urlPrograma.slice(10);
+        loadContent( '#program-content', 'paginas', programa, 'programa');
+    }
+});
